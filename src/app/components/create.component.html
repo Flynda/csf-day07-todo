@@ -1,0 +1,9 @@
+<h2>New TODO</h2>
+
+<!-- #myTodo is a template reference; cannot have same name in todo component -->
+<app-todo #myTodo></app-todo>
+
+<hr>
+
+<button type="button" [routerLink]="['/']">Home</button>
+<button type="button" (click)="addTodo()">Add Todo</button>
