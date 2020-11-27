@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Todo } from '../models';
+import { Task, Todo } from '../models';
 
 @Component({
   selector: 'app-todo',
@@ -13,8 +13,6 @@ export class TodoComponent implements OnInit {
   tasksArray: FormArray;
 
   @Input()
-  todoDetail: Todo;
-
   get todo(): Todo {
     const t:Todo = this.todoForm.value as Todo
     t.tasks = t.tasks.map(v => {
@@ -25,16 +23,29 @@ export class TodoComponent implements OnInit {
     return t
   }
   set todo(t : Todo) {
-    // this.todoForm.value.title = t.title
-    // this.todoForm.value.tasks = t.tasks
-  }
+    this.todoForm = this.createTodo(t)
+    this.tasksArray = this.todoForm.get('tasks') as FormArray
+    t?.tasks.map( i => {
+      const task = this.createTasks(i)
+      this.tasksArray.push(task)
+    })
 
+    // this.todoForm.setValue({title: t.title})
+    // t.tasks.map(i => {
+    //   const task: Task = {description: i.description, priority: i.priority}
+    //   const addTask: FormGroup = this.createTasks(task)
+    //   this.tasksArray.push(addTask)
+    // })
+  }
+  
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.todoForm = this.createTodo()
     this.tasksArray = this.todoForm.get('tasks') as FormArray
   }
+
+
 
   addNewTask(){
     console.info('I added more tasks!')
@@ -44,7 +55,7 @@ export class TodoComponent implements OnInit {
 
   showValues(){
     console.info('form values:', this.todoForm.value)
-    console.info('in here: ', this.todoDetail)
+    // console.info('in here: ', this.todoDetail)
   }
 
   deleteTask(index: number){
@@ -59,10 +70,10 @@ export class TodoComponent implements OnInit {
     })
   }
 
-  private createTasks(): FormGroup {
+  private createTasks(singleTask: Task = null): FormGroup {
     return this.fb.group({
-      description: this.fb.control('', [ Validators.required]),
-      priority: this.fb.control(0)
+      description: this.fb.control(singleTask?.description, [ Validators.required]),
+      priority: this.fb.control((singleTask?.priority || 0))
     })
   }
 

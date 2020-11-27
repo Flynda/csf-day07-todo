@@ -31,7 +31,7 @@ export class TodoDetailComponent implements OnInit {
   async updateTodo() {
     const todo = this.todoRef.todo
     todo.id = this.todoId
-
+    console.info('234:' , this.todoRef.todo)
     await this.todoDB.addTodo(todo)
     this.router.navigate(['/'])
   }

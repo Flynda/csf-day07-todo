@@ -1,7 +1,7 @@
 <h2>Todo {{todoId}}</h2>
 <hr>
-<app-todo [todoDetail]="todoDetail" #myTodo></app-todo>
+<app-todo [todo]="todoDetail" #myTodo></app-todo>
 
 <button type="button" (click)="updateTodo()">Update</button>
 <button type="button" (click)="deleteTodo()">Delete</button>
-<button type="button" [routerLink]="['/']">Back</button>
+<button type="button" [routerLink]="['/']">Cancel</button>
